@@ -11,28 +11,28 @@ export const Tab = ({ db }: any) => {
       <div className="border-t-2 border-b-2 border-border py-3 px-5 flex gap-2 bg-background">
         <button
           onClick={() => setTab(0)}
-          className={`text-foreground py-1.5 px-4 rounded ${
+          className={`text-foreground py-1.5 px-4 rounded transition-colors ${
             tab == 0 && "bg-white shadow-xs"
           }`}>
           Overview
         </button>
         <button
           onClick={() => setTab(1)}
-          className={`text-foreground py-1.5 px-4 rounded ${
+          className={`text-foreground py-1.5 px-4 rounded transition-colors ${
             tab == 1 && "bg-white shadow-xs"
           }`}>
           Vulnerabilities
         </button>
         <button
           onClick={() => setTab(2)}
-          className={`text-foreground py-1.5 px-4 rounded ${
+          className={`text-foreground py-1.5 px-4 rounded transition-colors ${
             tab == 2 && "bg-white shadow-xs"
           }`}>
           Versions
         </button>
         <button
           onClick={() => setTab(3)}
-          className={`text-foreground py-1.5 px-4 rounded ${
+          className={`text-foreground py-1.5 px-4 rounded transition-colors ${
             tab == 3 && "bg-white shadow-xs"
           }`}>
           License
@@ -40,20 +40,47 @@ export const Tab = ({ db }: any) => {
       </div>
       <div className="w-full h-auto">
         {tab == 0 && (
-          <div className="max-w-3xl mx-auto border-l-4 border-primary p-6 space-y-2 my-12">
-            <h3 className="text-xl font-medium">Summary</h3>
-            <p className="text-slate-500 text-base">
-              This analysis was performed using vet and SafeDep Cloud Malicious
-              Package Analysis. Integrate with GitHub using vet-action GitHub
-              Action.
-              <br />
-              Note: This report is updated by a verification record
-            </p>
-            <p className="text-slate-500">
-              Multiple files flagged for potential data exfiltration, XSS, and
-              RCE vulnerabilities. High confidence of malicious intent due to
-              combined factors.
-            </p>
+          <div>
+            <div className="max-w-3xl mx-auto border-l-4 border-primary p-6 pr-0 space-y-2 my-12">
+              <h3 className="text-xl font-medium">Summary</h3>
+              <p className="text-slate-500 text-base w-full">
+                This analysis was performed using vet and SafeDep Cloud
+                Malicious Package Analysis. Integrate with GitHub using
+                vet-action GitHub Action.
+                <br />
+                <span className="text-slate-500 font-bold">Note:</span> This
+                report is updated by a verification record
+              </p>
+              <p className="text-slate-500">
+                Multiple files flagged for potential data exfiltration, XSS, and
+                RCE vulnerabilities. High confidence of malicious intent due to
+                combined factors.
+              </p>
+            </div>
+            <div className="max-w-3xl mx-auto border-l-4 border-border p-6 pr-0 space-y-2 my-12">
+              <h3 className="text-xl font-medium">Verification Record</h3>
+              <p className="text-slate-500 text-base">
+                Manual analysis confirmed that the package is clean.
+              </p>
+            </div>
+            <div className="max-w-3xl mx-auto border-l-4 border-border p-6 pr-0 space-y-6 my-12">
+              <h3 className="text-xl font-medium">Details</h3>
+              <p className="text-slate-500 text-base">
+                <span className="text-slate-500 font-bold">Note:</span> This
+                report is updated by a verification record
+              </p>
+              <p className="text-slate-500">
+                The package exhibits multiple concerning behaviors. Several
+                files match the 'sys_net_recon_exfil' YARA rule, suggesting
+                potential system and network information exfiltration.
+                Additionally, the code constructs javascript: URLs and assigns
+                them to formAction attributes, which can lead to XSS or RCE if
+                user-controlled data is involved. Furthermore, dynamic code
+                execution is possible via formatDynamicImportPath if the
+                cacheHandlers configuration is compromised. These factors,
+                combined, indicate malicious intent.
+              </p>
+            </div>
           </div>
         )}
         {tab == 1 && (
@@ -79,7 +106,7 @@ export const Tab = ({ db }: any) => {
                 </tr>
               </thead>
               <tbody>
-                {db.insight.vulnerabilities &&
+                {db.insight.vulnerabilities ? (
                   db.insight.vulnerabilities.map((vul: any) => (
                     <VulTable
                       key={vul.id.value || null}
@@ -89,7 +116,12 @@ export const Tab = ({ db }: any) => {
                       published={vul.publishedAt || null}
                       modified={vul.modifiedAt || null}
                     />
-                  ))}
+                  ))
+                ) : (
+                  <p className="text-foreground p-3 w-full text-center">
+                    No Data
+                  </p>
+                )}
               </tbody>
             </table>
           </div>
@@ -111,7 +143,7 @@ export const Tab = ({ db }: any) => {
                 </tr>
               </thead>
               <tbody>
-                {db.insight.availableVersions &&
+                {db.insight.availableVersions ? (
                   db.insight.availableVersions.reverse().map((version: any) => (
                     <tr key={version.version}>
                       <td className="text-left font-regular text-sm text-foreground p-3">
@@ -126,7 +158,12 @@ export const Tab = ({ db }: any) => {
                         View Version
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <p className="text-foreground p-3 w-full text-center">
+                    No Data
+                  </p>
+                )}
               </tbody>
             </table>
           </div>
@@ -148,7 +185,7 @@ export const Tab = ({ db }: any) => {
                 </tr>
               </thead>
               <tbody>
-                {db.insight.licenses &&
+                {db.insight.licenses ? (
                   db.insight.licenses.licenses.map((license: any) => (
                     <tr key={license.licenseId}>
                       <td className="text-left font-regular text-sm text-foreground p-3">
@@ -167,7 +204,12 @@ export const Tab = ({ db }: any) => {
                         </td>
                       )}
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <p className="text-foreground p-3 w-full text-center">
+                    No Data
+                  </p>
+                )}
               </tbody>
             </table>
           </div>

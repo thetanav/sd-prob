@@ -50,20 +50,29 @@ export default async function Page({ params }: { params: any }) {
               </p>
             </div>
             <p className="text-slate-500 ">
-              Analyzed at <span className="text-foreground">242342342</span>
+              Analyzed at{" "}
+              <span className="text-foreground">24 Oct 2025, 10:06</span>
             </p>
             <p className="text-slate-500 ">
-              Source <span className="text-foreground">242342342</span>
+              Source{" "}
+              <span className="text-foreground">
+                https://registry.npmjs.org/next/-/next-15.5.4.tgz
+              </span>
             </p>
             <p className="text-slate-500 ">
               SHA256{" "}
-              <span className="text-foreground font-mono">sdfas242342342</span>
+              <span className="text-foreground font-mono">
+                5188d186e94a8d5470af6ed2725d209d8b2abc29cc7d6bedd58a748efd7e89f9
+              </span>
             </p>
             <p className="text-slate-500 ">
-              Confidence <span className="text-foreground">242342342</span>
+              Confidence{" "}
+              <span className="text-foreground">
+                5188d186e94a8d5470af6ed2725d209d8b2abc29cc7d6bedd58a748efd7e89f9
+              </span>
             </p>
           </div>
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid sm:grid-cols-5 grid-cols-2 gap-2">
             {db.packageVersion.version && (
               <ScoreCard
                 name="Version"
